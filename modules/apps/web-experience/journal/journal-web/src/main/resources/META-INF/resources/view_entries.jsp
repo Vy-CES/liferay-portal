@@ -298,7 +298,7 @@ String searchContainerId = ParamUtil.getString(request, "searchContainerId");
 								actionJspServletContext="<%= application %>"
 								resultRow="<%= row %>"
 								rowChecker="<%= articleSearchContainer.getRowChecker() %>"
-								text="<%= HtmlUtil.escape(curFolder.getName()) %>"
+								text="<%= curFolder.getName() %>"
 								url="<%= rowURL.toString() %>"
 							>
 								<liferay-frontend:horizontal-card-col>
