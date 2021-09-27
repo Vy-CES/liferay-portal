@@ -68,8 +68,6 @@ public class CalendarDisplayContext {
 
 					_log.info(sb.toString(), principalException);
 				}
-
-				continue;
 			}
 
 			if (calendar == null) {
