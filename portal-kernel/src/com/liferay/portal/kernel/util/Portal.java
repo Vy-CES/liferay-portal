@@ -1079,9 +1079,18 @@ public interface Portal {
 		PortletResponse portletResponse, ThemeDisplay themeDisplay,
 		String portletName);
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getSiteAdminURL(Company,
+	 *             Group, String, Map)}
+	 */
+	@Deprecated
 	public String getSiteAdminURL(
 			Company company, Group group, String ppid,
 			Map<String, String[]> params)
+		throws PortalException;
+
+	public String getSiteAdminURL(
+		ThemeDisplay themeDisplay, String ppid, Map<String, String[]> params)
 		throws PortalException;
 
 	/**
