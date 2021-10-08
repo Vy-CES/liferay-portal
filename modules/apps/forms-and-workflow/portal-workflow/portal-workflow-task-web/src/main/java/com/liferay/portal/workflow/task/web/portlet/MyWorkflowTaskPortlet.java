@@ -20,17 +20,22 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowException;
+import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
+import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 import com.liferay.portal.workflow.task.web.configuration.WorkflowTaskWebConfiguration;
 import com.liferay.portal.workflow.task.web.permission.WorkflowTaskPermissionChecker;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import java.util.Map;
 
@@ -123,8 +128,13 @@ public class MyWorkflowTaskPortlet extends MVCPortlet {
 			WorkflowTask workflowTask, ThemeDisplay themeDisplay)
 		throws PortalException {
 
+		long groupId = getWorkflowGroupId(
+			themeDisplay.getCompanyId(), workflowTask);
+
+		long groupId2 = themeDisplay.getSiteGroupId();
+
 		if (!_workflowTaskPermissionChecker.hasPermission(
-				themeDisplay.getScopeGroupId(), workflowTask,
+			 groupId, workflowTask,
 				themeDisplay.getPermissionChecker())) {
 
 			throw new PrincipalException(
@@ -163,6 +173,20 @@ public class MyWorkflowTaskPortlet extends MVCPortlet {
 		}
 
 		return false;
+	}
+
+	protected long getWorkflowGroupId(long companyId, WorkflowTask workflowTask)
+		throws WorkflowException {
+
+		WorkflowInstance workflowInstance =
+			WorkflowInstanceManagerUtil.getWorkflowInstance(
+				companyId, workflowTask.getWorkflowInstanceId());
+
+		Map<String, Serializable> workflowContext =
+			workflowInstance.getWorkflowContext();
+
+		return GetterUtil.getLong(
+			(String)workflowContext.get(WorkflowConstants.CONTEXT_GROUP_ID));
 	}
 
 	protected void setWorkflowTaskRenderRequestAttribute(
