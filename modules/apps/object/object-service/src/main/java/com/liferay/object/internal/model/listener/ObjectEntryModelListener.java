@@ -145,6 +145,10 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 			HashMapBuilder.putAll(
 				objectEntry.getModelAttributes()
 			).put(
+				"creator", user.getFullName()
+			).put(
+				"id", objectEntry.getObjectEntryId()
+			).put(
 				"values", objectEntry.getValues()
 			).build()
 		).put(
