@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -31,6 +32,11 @@ import com.liferay.portal.kernel.service.CountryLocalService;
 import com.liferay.portal.kernel.service.RegionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -102,6 +108,14 @@ public class PortalAddressOSGiCommands {
 					countryJSONObject.getString("number"), 0, true, false,
 					countryJSONObject.getBoolean("zipRequired"),
 					serviceContext);
+
+				Map<String, String> titleMap = new HashMap<>();
+
+				for (Locale locale : _language.getCompanyAvailableLocales(companyId)) {
+					titleMap.put(_language.getLanguageId(locale), country.getName(locale));
+				}
+
+				_countryLocalService.updateCountryLocalizations(country, titleMap);
 
 				_processCountryRegions(country);
 			}
@@ -193,6 +207,9 @@ public class PortalAddressOSGiCommands {
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private RegionLocalService _regionLocalService;
