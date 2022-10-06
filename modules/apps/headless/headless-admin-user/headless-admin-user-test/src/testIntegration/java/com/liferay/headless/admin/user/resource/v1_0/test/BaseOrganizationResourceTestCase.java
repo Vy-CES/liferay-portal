@@ -598,7 +598,6 @@ public abstract class BaseOrganizationResourceTestCase {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
-
 	protected String
 			testGetAccountByExternalReferenceCodeOrganizationsPage_getIrrelevantExternalReferenceCode()
 		throws Exception {
@@ -613,12 +612,11 @@ public abstract class BaseOrganizationResourceTestCase {
 		@SuppressWarnings("PMD.UnusedLocalVariable")
 		Organization organization =
 			testDeleteAccountByExternalReferenceCodeOrganization_addOrganization();
-
 		assertHttpResponseStatusCode(
 			204,
 			organizationResource.
 				deleteAccountByExternalReferenceCodeOrganizationHttpResponse(
-					organization.getExternalReferenceCode(),
+					testGetAccountByExternalReferenceCodeOrganizationsPage_getExternalReferenceCode(),
 					organization.getId()));
 	}
 

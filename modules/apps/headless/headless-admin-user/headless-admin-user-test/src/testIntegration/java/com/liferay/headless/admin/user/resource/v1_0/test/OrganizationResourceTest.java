@@ -268,18 +268,30 @@ public class OrganizationResourceTest extends BaseOrganizationResourceTestCase {
 			testDeleteAccountByExternalReferenceCodeOrganization_addOrganization()
 		throws Exception {
 
-		return organizationResource.putOrganizationByExternalReferenceCode(
-			StringUtil.toLowerCase(RandomTestUtil.randomString()),
-			randomOrganization());
+		Organization organization =
+			organizationResource.putOrganizationByExternalReferenceCode(
+				StringUtil.toLowerCase(RandomTestUtil.randomString()),
+				randomOrganization());
+
+		organizationResource.postAccountOrganization(
+			testDeleteAccountOrganization_getAccountId(), organization.getId());
+
+		return organization;
 	}
 
 	@Override
 	protected Organization testDeleteAccountOrganization_addOrganization()
 		throws Exception {
 
-		return organizationResource.putOrganizationByExternalReferenceCode(
-			StringUtil.toLowerCase(RandomTestUtil.randomString()),
-			randomOrganization());
+		Organization organization =
+			organizationResource.putOrganizationByExternalReferenceCode(
+				StringUtil.toLowerCase(RandomTestUtil.randomString()),
+				randomOrganization());
+
+		organizationResource.postAccountOrganization(
+			testDeleteAccountOrganization_getAccountId(), organization.getId());
+
+		return organization;
 	}
 
 	@Override
