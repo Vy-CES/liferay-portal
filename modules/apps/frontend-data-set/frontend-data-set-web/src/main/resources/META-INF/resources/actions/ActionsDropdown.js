@@ -146,7 +146,7 @@ function ActionsDropdown({
 
 		const onActionDropdownItemClick = context.onActionDropdownItemClick;
 
-		const url = formatActionURL(action.href, itemData);
+		const url = action.href ? formatActionURL(action.href, itemData) : "";
 
 		const elementWithIconSpecialProps = action.icon
 			? {
