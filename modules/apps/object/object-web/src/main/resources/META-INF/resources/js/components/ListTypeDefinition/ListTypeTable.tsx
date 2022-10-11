@@ -90,6 +90,7 @@ function getDataSetProps(
 				itemKey: itemData.key,
 				modalType: 'edit',
 				name_i18n: itemData.name_i18n,
+				readOnly: readOnly,
 			});
 		}
 	};
