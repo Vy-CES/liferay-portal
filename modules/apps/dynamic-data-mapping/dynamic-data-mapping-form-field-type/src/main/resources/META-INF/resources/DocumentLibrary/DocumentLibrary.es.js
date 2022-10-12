@@ -260,7 +260,7 @@ const Main = ({
 	_onBlur,
 	_onFocus,
 	allowGuestUsers,
-	displayErrors: initialDisplayErrors,
+	displayErrors: initialDisplayErrors = false,
 	editingLanguageId,
 	errorMessage: initialErrorMessage,
 	fieldName,
