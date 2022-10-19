@@ -28,7 +28,21 @@
 </c:choose>
 
 <%
+String backURL = ParamUtil.getString(request, "backURL");
+
 KBTemplate kbTemplate = (KBTemplate)request.getAttribute(KBWebKeys.KNOWLEDGE_BASE_KB_TEMPLATE);
+
+if (Validator.isNotNull(backURL)) {
+	portletDisplay.setURLBack(backURL);
+}
+
+boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getInitParameter("portlet-title-based-navigation"));
+
+if (portletTitleBasedNavigation) {
+	portletDisplay.setShowBackIcon(true);
+	portletDisplay.setURLBack(redirect);
+	renderResponse.setTitle(kbTemplate.getTitle());
+}
 %>
 
 <div class="container-fluid container-fluid-max-xl container-form-lg">

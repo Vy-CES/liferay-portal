@@ -450,6 +450,8 @@ public class KBDropdownItemsProvider {
 						_liferayPortletResponse
 					).setMVCPath(
 						"/admin/view_kb_template.jsp"
+					).setRedirect(
+						_currentURL
 					).setParameter(
 						"kbTemplateId", kbTemplate.getKbTemplateId()
 					).buildRenderURL());
