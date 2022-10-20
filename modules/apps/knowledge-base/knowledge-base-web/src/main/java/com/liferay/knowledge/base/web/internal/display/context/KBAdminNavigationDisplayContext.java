@@ -183,14 +183,15 @@ public class KBAdminNavigationDisplayContext {
 		String mvcPath = ParamUtil.getString(_httpServletRequest, "mvcPath");
 
 		if (PortletPermissionUtil.contains(
-				_themeDisplay.getPermissionChecker(), _themeDisplay.getPlid(),
-				portletDisplay.getId(), KBActionKeys.VIEW)) {
+			_themeDisplay.getPermissionChecker(), _themeDisplay.getPlid(),
+			portletDisplay.getId(), KBActionKeys.VIEW)) {
 
 			boolean active = false;
 			JSONArray navigationItemsJSONArray = null;
 
 			if (!mvcPath.equals("/admin/view_kb_suggestions.jsp") &&
-				!mvcPath.equals("/admin/view_kb_templates.jsp")) {
+				!mvcPath.equals("/admin/view_kb_templates.jsp") &&
+				!mvcPath.equals("/admin/view_kb_template.jsp")) {
 
 				active = true;
 				navigationItemsJSONArray = _getChildrenJSONArray();
@@ -225,13 +226,15 @@ public class KBAdminNavigationDisplayContext {
 		}
 
 		if (AdminPermission.contains(
-				_themeDisplay.getPermissionChecker(),
-				_themeDisplay.getScopeGroupId(),
-				KBActionKeys.VIEW_KB_TEMPLATES)) {
+			_themeDisplay.getPermissionChecker(),
+			_themeDisplay.getScopeGroupId(),
+			KBActionKeys.VIEW_KB_TEMPLATES)) {
 
 			boolean active = false;
 
-			if (mvcPath.equals("/admin/view_kb_templates.jsp")) {
+			if (mvcPath.equals("/admin/view_kb_templates.jsp") ||
+				mvcPath.equals("/admin/view_kb_template.jsp")) {
+
 				active = true;
 			}
 
@@ -252,14 +255,19 @@ public class KBAdminNavigationDisplayContext {
 				).put(
 					"navigationItems", _getNavigationItemsJSONArray()
 				).put(
+					"selectedItemId",
+					ParamUtil.getLong(
+						_httpServletRequest, "selectedItemId",
+						KBFolderConstants.DEFAULT_PARENT_FOLDER_ID)
+				).put(
 					"title", LanguageUtil.get(_httpServletRequest, "templates")
 				));
 		}
 
 		if (AdminPermission.contains(
-				_themeDisplay.getPermissionChecker(),
-				_themeDisplay.getScopeGroupId(),
-				KBActionKeys.VIEW_SUGGESTIONS)) {
+			_themeDisplay.getPermissionChecker(),
+			_themeDisplay.getScopeGroupId(),
+			KBActionKeys.VIEW_SUGGESTIONS)) {
 
 			boolean active = false;
 
@@ -455,7 +463,11 @@ public class KBAdminNavigationDisplayContext {
 						PortalUtil.getCurrentURL(_httpServletRequest)
 					).setParameter(
 						"kbTemplateId", kbTemplate.getKbTemplateId()
+					).setParameter(
+						"selectedItemId", kbTemplate.getPrimaryKey()
 					).buildString()
+				).put(
+					"id", kbTemplate.getPrimaryKey()
 				).put(
 					"name", kbTemplate.getTitle()
 				));

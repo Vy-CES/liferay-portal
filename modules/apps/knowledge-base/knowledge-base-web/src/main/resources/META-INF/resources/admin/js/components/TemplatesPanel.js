@@ -15,23 +15,37 @@
 import {TreeView as ClayTreeView} from '@clayui/core';
 import ClayEmptyState from '@clayui/empty-state';
 import ClayLink from '@clayui/link';
+import classnames from 'classnames';
+import {navigate} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import ActionsDropdown from './ActionsDropdown';
-export default function TemplatesPanel({items}) {
+
+export default function TemplatesPanel({items, selectedItemId}) {
+
 	return items?.length ? (
-		<ClayTreeView defaultItems={items} nestedKey="children">
+		<ClayTreeView
+			defaultItems={items}
+			defaultSelectedKeys={new Set([selectedItemId])}
+			nestedKey="children"
+			showExpanderOnHover={false}
+		>
 			{(item) => {
 				return (
 					<ClayTreeView.Item
 						actions={ActionsDropdown({actions: item.actions})}
-						className="pl-1"
 					>
-						<ClayTreeView.ItemStack>
+						<ClayTreeView.ItemStack
+								className={classnames({
+									'knowledge-base-navigation-item-active':
+										item.id === selectedItemId,
+								})}
+							>
 							<ClayLink displayType="secondary" href={item.href}>
 								{item.name}
 							</ClayLink>
+							{item.name}
 						</ClayTreeView.ItemStack>
 					</ClayTreeView.Item>
 				);
@@ -52,6 +66,8 @@ TemplatesPanel.propTypes = {
 		PropTypes.shape({
 			href: PropTypes.string.isRequired,
 			name: PropTypes.string.isRequired,
+			id: PropTypes.string.isRequired,
 		})
 	),
+	selectedItemId: PropTypes.string,
 };

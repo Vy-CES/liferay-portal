@@ -454,6 +454,8 @@ public class KBDropdownItemsProvider {
 						_currentURL
 					).setParameter(
 						"kbTemplateId", kbTemplate.getKbTemplateId()
+					).setParameter(
+						"selectedItemId", kbTemplate.getPrimaryKey()
 					).buildRenderURL());
 				dropdownItem.setIcon("view");
 				dropdownItem.setLabel(
