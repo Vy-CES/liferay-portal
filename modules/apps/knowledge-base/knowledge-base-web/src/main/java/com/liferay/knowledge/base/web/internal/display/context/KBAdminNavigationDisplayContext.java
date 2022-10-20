@@ -183,8 +183,8 @@ public class KBAdminNavigationDisplayContext {
 		String mvcPath = ParamUtil.getString(_httpServletRequest, "mvcPath");
 
 		if (PortletPermissionUtil.contains(
-			_themeDisplay.getPermissionChecker(), _themeDisplay.getPlid(),
-			portletDisplay.getId(), KBActionKeys.VIEW)) {
+				_themeDisplay.getPermissionChecker(), _themeDisplay.getPlid(),
+				portletDisplay.getId(), KBActionKeys.VIEW)) {
 
 			boolean active = false;
 			JSONArray navigationItemsJSONArray = null;
@@ -226,16 +226,19 @@ public class KBAdminNavigationDisplayContext {
 		}
 
 		if (AdminPermission.contains(
-			_themeDisplay.getPermissionChecker(),
-			_themeDisplay.getScopeGroupId(),
-			KBActionKeys.VIEW_KB_TEMPLATES)) {
+				_themeDisplay.getPermissionChecker(),
+				_themeDisplay.getScopeGroupId(),
+				KBActionKeys.VIEW_KB_TEMPLATES)) {
 
 			boolean active = false;
+			JSONArray navigationItemsJSONArray = null;
 
 			if (mvcPath.equals("/admin/view_kb_templates.jsp") ||
 				mvcPath.equals("/admin/view_kb_template.jsp")) {
 
 				active = true;
+				navigationItemsJSONArray =
+					_getKBTemplatesNavigationItemsJSONArray();
 			}
 
 			verticalNavigationItems.add(
@@ -253,7 +256,7 @@ public class KBAdminNavigationDisplayContext {
 				).put(
 					"key", "template"
 				).put(
-					"navigationItems", _getNavigationItemsJSONArray()
+					"navigationItems", navigationItemsJSONArray
 				).put(
 					"selectedItemId",
 					ParamUtil.getLong(
@@ -265,9 +268,9 @@ public class KBAdminNavigationDisplayContext {
 		}
 
 		if (AdminPermission.contains(
-			_themeDisplay.getPermissionChecker(),
-			_themeDisplay.getScopeGroupId(),
-			KBActionKeys.VIEW_SUGGESTIONS)) {
+				_themeDisplay.getPermissionChecker(),
+				_themeDisplay.getScopeGroupId(),
+				KBActionKeys.VIEW_SUGGESTIONS)) {
 
 			boolean active = false;
 
@@ -438,7 +441,7 @@ public class KBAdminNavigationDisplayContext {
 		return childrenJSONArray;
 	}
 
-	private JSONArray _getNavigationItemsJSONArray() {
+	private JSONArray _getKBTemplateChildrenJSONArray() {
 		JSONArray navigationItemsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		List<KBTemplate> kbTemplates =
@@ -470,10 +473,35 @@ public class KBAdminNavigationDisplayContext {
 					"id", kbTemplate.getPrimaryKey()
 				).put(
 					"name", kbTemplate.getTitle()
+				).put(
+					"type", "template"
 				));
 		}
 
 		return navigationItemsJSONArray;
+	}
+
+	private JSONArray _getKBTemplatesNavigationItemsJSONArray() {
+		return JSONUtil.put(
+			JSONUtil.put(
+				"actions",
+				_kbDropdownItemsProvider.getKBFolderDropdownItems(null)
+			).put(
+				"children", _getKBTemplateChildrenJSONArray()
+			).put(
+				"href",
+				PortletURLBuilder.createRenderURL(
+					_liferayPortletResponse
+				).setMVCPath(
+					"/admin/view_kb_templates.jsp"
+				).buildString()
+			).put(
+				"id", KBFolderConstants.DEFAULT_PARENT_FOLDER_ID
+			).put(
+				"name", _themeDisplay.translate("home")
+			).put(
+				"type", "folder"
+			));
 	}
 
 	private final HttpServletRequest _httpServletRequest;

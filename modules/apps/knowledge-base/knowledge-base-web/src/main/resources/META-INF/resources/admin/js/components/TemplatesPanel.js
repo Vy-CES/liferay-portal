@@ -14,16 +14,20 @@
 
 import {TreeView as ClayTreeView} from '@clayui/core';
 import ClayEmptyState from '@clayui/empty-state';
+import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import classnames from 'classnames';
-import {navigate} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import ActionsDropdown from './ActionsDropdown';
 
-export default function TemplatesPanel({items, selectedItemId}) {
+const ITEM_TYPES_SYMBOL = {
+	folder: 'folder',
+	template: 'document-text',
+};
 
+export default function TemplatesPanel({items, selectedItemId}) {
 	return items?.length ? (
 		<ClayTreeView
 			defaultItems={items}
@@ -37,16 +41,44 @@ export default function TemplatesPanel({items, selectedItemId}) {
 						actions={ActionsDropdown({actions: item.actions})}
 					>
 						<ClayTreeView.ItemStack
-								className={classnames({
-									'knowledge-base-navigation-item-active':
-										item.id === selectedItemId,
-								})}
-							>
+							className={classnames({
+								'knowledge-base-navigation-item-active':
+									item.id === selectedItemId,
+							})}
+						>
 							<ClayLink displayType="secondary" href={item.href}>
+								<ClayIcon
+									symbol={ITEM_TYPES_SYMBOL[item.type]}
+								/>
+
 								{item.name}
 							</ClayLink>
-							{item.name}
 						</ClayTreeView.ItemStack>
+
+						<ClayTreeView.Group items={item.children}>
+							{(item) => {
+								return (
+									<ClayTreeView.Item
+										actions={ActionsDropdown({
+											actions: item.actions,
+										})}
+									>
+										<ClayLink
+											displayType="secondary"
+											href={item.href}
+										>
+											<ClayIcon
+												symbol={
+													ITEM_TYPES_SYMBOL[item.type]
+												}
+											/>
+
+											{item.name}
+										</ClayLink>
+									</ClayTreeView.Item>
+								);
+							}}
+						</ClayTreeView.Group>
 					</ClayTreeView.Item>
 				);
 			}}
@@ -61,13 +93,16 @@ export default function TemplatesPanel({items, selectedItemId}) {
 	);
 }
 
+const itemShape = {
+	href: PropTypes.string.isRequired,
+	id: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
+	type: PropTypes.oneOf(Object.keys(ITEM_TYPES_SYMBOL)).isRequired,
+};
+
+itemShape.children = PropTypes.arrayOf(PropTypes.shape(itemShape));
+
 TemplatesPanel.propTypes = {
-	items: PropTypes.arrayOf(
-		PropTypes.shape({
-			href: PropTypes.string.isRequired,
-			name: PropTypes.string.isRequired,
-			id: PropTypes.string.isRequired,
-		})
-	),
+	items: PropTypes.arrayOf(PropTypes.shape(itemShape)),
 	selectedItemId: PropTypes.string,
 };
