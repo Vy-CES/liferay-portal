@@ -97,7 +97,9 @@ AUI.add(
 							direction = 0;
 						}
 
-						instance._orderItem(box, direction);
+						if (!targetBtn.attr('disabled')) {
+							instance._orderItem(box, direction);
+						}
 					}
 				},
 
