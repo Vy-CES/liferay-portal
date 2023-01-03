@@ -143,7 +143,7 @@ AUI.add(
 					const instance = this;
 
 					instance._toggleBtnMove(event);
-					instance._toggleBtnSort(event);
+					instance._toggleBtnSort(event.currentTarget);
 				},
 
 				_onSelectFocus(event, box) {
@@ -155,12 +155,11 @@ AUI.add(
 				},
 
 				_orderItem(box, direction) {
+					const instance = this;
+
 					Util.reorder(box, direction);
 
-					Liferay.fire(NAME + ':orderItem', {
-						box,
-						direction,
-					});
+					instance._toggleBtnSort(box);
 				},
 
 				_renderBoxes() {
@@ -308,7 +307,7 @@ AUI.add(
 					);
 				},
 
-				_toggleBtnSort(event) {
+				_toggleBtnSort(changedBox) {
 					const instance = this;
 
 					const contentBox = instance.get('contentBox');
@@ -316,26 +315,31 @@ AUI.add(
 					const sortBtnDown = contentBox.one('.reorder-down');
 					const sortBtnUp = contentBox.one('.reorder-up');
 
-					const currentTarget = event.currentTarget;
+					const leftBox = instance._leftBox;
+					const rightBox = instance._rightBox;
 
-					if (currentTarget && sortBtnDown && sortBtnUp) {
-						const length = currentTarget.get('length');
-						const selectedIndex = currentTarget.get(
-							'selectedIndex'
-						);
+					if (changedBox && sortBtnDown && sortBtnUp) {
+						const length = changedBox.get('length');
+						const selectedIndex = changedBox.get('selectedIndex');
 
 						let btnDisabledDown = false;
 						let btnDisabledUp = false;
 
-						if (selectedIndex === length - 1) {
-							btnDisabledDown = true;
+						if (changedBox === leftBox) {
+							if (selectedIndex === length - 1) {
+								btnDisabledDown = true;
+							}
+							else if (selectedIndex === 0) {
+								btnDisabledUp = true;
+							}
+							else if (selectedIndex === -1) {
+								btnDisabledDown = true;
+								btnDisabledUp = true;
+							}
 						}
-						else if (selectedIndex === 0) {
-							btnDisabledUp = true;
-						}
-						else if (selectedIndex === -1) {
+						else if (changedBox === rightBox) {
 							btnDisabledDown = true;
-							btnDisabledUp = true;
+							btnDisabledUp = false;
 						}
 
 						instance._toggleBtnState(sortBtnDown, btnDisabledDown);
