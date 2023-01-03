@@ -142,14 +142,14 @@ AUI.add(
 				_onSelectChange(event) {
 					const instance = this;
 
-					instance._toggleBtnMove(event);
+					instance._toggleBtnMove(event.currentTarget);
 					instance._toggleBtnSort(event.currentTarget);
 				},
 
 				_onSelectFocus(event, box) {
 					const instance = this;
 
-					instance._toggleBtnMove(event);
+					instance._toggleBtnMove(event.currentTarget);
 
 					box.attr('selectedIndex', '-1');
 				},
@@ -280,10 +280,8 @@ AUI.add(
 					instance._toggleReorderToolbars();
 				},
 
-				_toggleBtnMove(event) {
+				_toggleBtnMove(sourceBox) {
 					const instance = this;
-
-					const sourceBox = event.target;
 
 					const selectedOptions = sourceBox
 						.get('options')
