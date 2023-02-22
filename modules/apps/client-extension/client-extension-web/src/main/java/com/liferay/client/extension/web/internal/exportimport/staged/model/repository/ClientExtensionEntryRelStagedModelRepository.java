@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -47,7 +48,12 @@ public class ClientExtensionEntryRelStagedModelRepository
 			clientExtensionEntryRel);
 
 		if (portletDataContext.isDataStrategyMirror()) {
+
 			serviceContext.setUuid(clientExtensionEntryRel.getUuid());
+			serviceContext.setCreateDate(clientExtensionEntryRel.getCreateDate());
+			serviceContext.setModifiedDate(clientExtensionEntryRel.getModifiedDate());
+
+			ServiceContextThreadLocal.pushServiceContext(serviceContext);
 		}
 
 		return _clientExtensionEntryRelLocalService.addClientExtensionEntryRel(

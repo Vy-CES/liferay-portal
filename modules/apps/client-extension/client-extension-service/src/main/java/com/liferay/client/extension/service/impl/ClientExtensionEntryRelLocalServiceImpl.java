@@ -19,6 +19,8 @@ import com.liferay.client.extension.service.base.ClientExtensionEntryRelLocalSer
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.List;
@@ -60,6 +62,15 @@ public class ClientExtensionEntryRelLocalServiceImpl
 			cetExternalReferenceCode);
 		clientExtensionEntryRel.setType(type);
 		clientExtensionEntryRel.setTypeSettings(typeSettings);
+
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+
+		if (serviceContext != null) {
+			clientExtensionEntryRel.setUuid(serviceContext.getUuid());
+			clientExtensionEntryRel.setExternalReferenceCode(serviceContext.getUuid());
+			clientExtensionEntryRel.setCreateDate(serviceContext.getCreateDate());
+			clientExtensionEntryRel.setModifiedDate(serviceContext.getModifiedDate());
+		}
 
 		return clientExtensionEntryRelPersistence.update(
 			clientExtensionEntryRel);

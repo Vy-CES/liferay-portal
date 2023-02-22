@@ -169,6 +169,10 @@ public class ClientExtensionEntryRelStagedModelDataHandler
 				existingClientExtensionEntryRel.getExternalReferenceCode());
 			importedClientExtensionEntryRel.setClientExtensionEntryRelId(
 				existingClientExtensionEntryRel.getClientExtensionEntryRelId());
+			importedClientExtensionEntryRel.setCreateDate(
+				existingClientExtensionEntryRel.getCreateDate());
+			importedClientExtensionEntryRel.setModifiedDate(
+				existingClientExtensionEntryRel.getModifiedDate());
 
 			importedClientExtensionEntryRel =
 				_stagedModelRepository.updateStagedModel(
