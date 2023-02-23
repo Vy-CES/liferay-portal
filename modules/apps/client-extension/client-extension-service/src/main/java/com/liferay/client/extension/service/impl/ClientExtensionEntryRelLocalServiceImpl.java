@@ -63,13 +63,17 @@ public class ClientExtensionEntryRelLocalServiceImpl
 		clientExtensionEntryRel.setType(type);
 		clientExtensionEntryRel.setTypeSettings(typeSettings);
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		if (serviceContext != null) {
 			clientExtensionEntryRel.setUuid(serviceContext.getUuid());
-			clientExtensionEntryRel.setExternalReferenceCode(serviceContext.getUuid());
-			clientExtensionEntryRel.setCreateDate(serviceContext.getCreateDate());
-			clientExtensionEntryRel.setModifiedDate(serviceContext.getModifiedDate());
+			clientExtensionEntryRel.setExternalReferenceCode(
+				serviceContext.getUuid());
+			clientExtensionEntryRel.setCreateDate(
+				serviceContext.getCreateDate());
+			clientExtensionEntryRel.setModifiedDate(
+				serviceContext.getModifiedDate());
 		}
 
 		return clientExtensionEntryRelPersistence.update(

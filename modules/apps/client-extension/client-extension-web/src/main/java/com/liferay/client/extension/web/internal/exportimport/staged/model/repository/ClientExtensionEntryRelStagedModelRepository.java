@@ -21,10 +21,10 @@ import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 
 import java.util.List;
 
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -48,10 +48,11 @@ public class ClientExtensionEntryRelStagedModelRepository
 			clientExtensionEntryRel);
 
 		if (portletDataContext.isDataStrategyMirror()) {
-
+			serviceContext.setCreateDate(
+				clientExtensionEntryRel.getCreateDate());
+			serviceContext.setModifiedDate(
+				clientExtensionEntryRel.getModifiedDate());
 			serviceContext.setUuid(clientExtensionEntryRel.getUuid());
-			serviceContext.setCreateDate(clientExtensionEntryRel.getCreateDate());
-			serviceContext.setModifiedDate(clientExtensionEntryRel.getModifiedDate());
 
 			ServiceContextThreadLocal.pushServiceContext(serviceContext);
 		}
