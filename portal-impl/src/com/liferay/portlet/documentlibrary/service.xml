@@ -36,7 +36,7 @@
 		<column name="fileName" type="String" uad-nonanonymizable="true" />
 		<column name="extension" type="String" uad-nonanonymizable="true" />
 		<column name="mimeType" type="String" />
-		<column name="title" type="String" uad-nonanonymizable="true" />
+		<column change-tracking-resolution-type="merge" name="title" type="String" uad-nonanonymizable="true" />
 		<column name="description" type="String" uad-nonanonymizable="true" />
 		<column name="extraSettings" type="String" />
 		<column name="fileEntryTypeId" type="long" />
