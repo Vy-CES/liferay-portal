@@ -15870,7 +15870,7 @@ public class DLFileEntryPersistenceImpl
 		ctStrictColumnNames.add("fileName");
 		ctStrictColumnNames.add("extension");
 		ctStrictColumnNames.add("mimeType");
-		ctStrictColumnNames.add("title");
+		ctMergeColumnNames.add("title");
 		ctStrictColumnNames.add("description");
 		ctStrictColumnNames.add("extraSettings");
 		ctStrictColumnNames.add("fileEntryTypeId");
